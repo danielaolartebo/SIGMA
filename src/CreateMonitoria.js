@@ -59,97 +59,96 @@ function CreateMonitoria() {
         setSelectedProgram(event.target.value);
     };
 
-  return (
-    <div className="task-container">
-      <VerticalNavbar />
-      <div className="content">
-        {/* Title begins */}
-        <div className="title-container">
-          <h2 className="title">Crear monitoria</h2>
+    return (
+        <div className="cm-task-container">
+            <VerticalNavbar />
+            <div className="cm-content">
+                {/* Title begins */}
+                <div className="cm-title-container">
+                    <h2 className="cm-title">Crear monitoria</h2>
+                </div>
+                {/* Title ends */}
+
+                <form className="cm-grid-container">
+                    {/* Nombre */}
+                    <label>Nombre</label>
+                    <input type="text" placeholder="Nombre" className="cm-input-text-box" />
+
+                    {/* Facultad */}
+                    <label>Facultad</label>
+                    <select className="cm-faculty"
+                            id="faculty-dropdown" 
+                            value={selectedFaculty} 
+                            onChange={handleFacultyChange}>
+                        <option value=""> Seleccionar </option>
+                        {faculties.map(faculty => (
+                            <option key={faculty.id} value={faculty.id}>
+                                {faculty.name}
+                            </option>
+                        ))}
+                    </select>
+
+                    {/* Programa */}
+                    <label>Programa</label>
+                    <select className="cm-program"
+                            id="program-dropdown" 
+                            value={selectedProgram} 
+                            onChange={handleProgramChange}>
+                        <option value=""> Seleccionar </option>
+                        {programs.map(program => (
+                            <option key={program.id} value={program.id}>
+                                {program.name}
+                            </option>
+                        ))}
+                    </select>
+
+                    {/* Materia/Curso */}
+                    <label>Materia/Curso</label>
+                    <select>
+                        <option>Seleccionar</option>
+                    </select>
+
+                    {/* Periodo académico */}
+                    <label>Periodo académico</label>
+                    <select>
+                        <option>Seleccionar</option>
+                    </select>
+
+                    {/* Grupo */}
+                    <label>Grupo</label>
+                    <select>
+                        <option>Seleccionar</option>
+                    </select>
+
+                    {/* Inicio de convocatoria en dos columnas */}
+                    <label>Inicio de convocatoria</label>
+                    <input type="date" className="cm-input-date" />
+
+                    {/* Fin de convocatoria */}
+                    <label>Fin de convocatoria</label>
+                    <input type="date" className="cm-input-date" />
+
+                    {/* Requisitos */}
+                    <label>Promedio acumulado:</label>
+                    <input type="text" placeholder="4.5" className="cm-input-text-box"/>
+                    <label>Promedio materia:</label>
+                    <input type="text" placeholder="4.5" className="cm-input-text-box"/>
+
+                    {/* Añadir nuevo requisito */}  
+                    <label></label>
+                    <Link to="#"></Link>
+
+                    <label></label>
+                    <Link to="#">¿Añadir nuevo requisito?</Link>
+                    
+                    {/* Botón de confirmación */}
+                    <Link to="/" type="submit" className="cm-confirm-button">Confirmar</Link>
+                </form>
+            </div>
         </div>
-        {/* Title ends */}
-
-        <form className="grid-container">
-          {/* Nombre */}
-          <label>Nombre</label>
-            <input type="text" placeholder="Nombre" className="input-text-box" />
-
-          {/* Facultad */}
-          <label>Facultad</label>
-          <select className="faculty"
-                    id="faculty-dropdown" 
-                    value={selectedFaculty} 
-                    onChange={handleFacultyChange}
-                >
-                    <option value=""> Seleccionar </option>
-                    {faculties.map(faculty => (
-                        <option key={faculty.id} value={faculty.id}>
-                            {faculty.name}
-                        </option>
-                    ))}
-           </select>
-
-          {/* Programa */}
-          <label>Programa</label>
-          <select className="program"
-                    id="program-dropdown" 
-                    value={selectedProgram} 
-                    onChange={handleProgramChange}
-                >
-                    <option value=""> Seleccionar </option>
-                    {programs.map(program => (
-                        <option key={program.id} value={program.id}>
-                            {program.name}
-                        </option>
-                    ))}
-           </select>
-
-          {/* Materia/Curso */}
-          <label>Materia/Curso</label>
-          <select>
-            <option>Seleccionar</option>
-          </select>
-
-          {/* Periodo académico */}
-          <label>Periodo académico</label>
-          <select>
-            <option>Seleccionar</option>
-          </select>
-
-          {/* Grupo */}
-          <label>Grupo</label>
-          <select>
-            <option>Seleccionar</option>
-          </select>
-
-            {/* Inicio de convocatoria en dos columnas */}
-          <label>Inicio de convocatoria</label>
-          <input type="date" className="input-date" />
-
-          {/* Fin de convocatoria */}
-          <label>Fin de convocatoria</label>
-          <input type="date" className="input-date" />
-
-            {/* Requisitos */}
-            <label>Promedio acumulado:</label>
-                <input type="text" placeholder="4.5" className="input-text-box"/>
-            <label>Promedio materia:</label>
-                    <input type="text" placeholder="4.5" className="input-text-box"/>
-
-            {/* Añadir nuevo requisito */}  
-            <label></label>
-                <Link to="#"></Link>
-
-            <label></label>
-                <Link to="#">¿Añadir nuevo requisito?</Link>
-            
-            {/* Botón de confirmación */}
-            <Link to="/" type="submit" className="confirm-button">Confirmar</Link>
-        </form>
-      </div>
-    </div>
-  );
+    );
 }
 
 export default CreateMonitoria;
+
 

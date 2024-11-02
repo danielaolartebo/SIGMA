@@ -1,152 +1,151 @@
 :root {
-    --main-color: #5454e8;
-    --hover-color: rgb(66, 65, 65);
-    --main-font-family: jakarta_bold,Arial,cursive;
-  }
+  --main-color: #5454e8;
+  --hover-color: rgb(66, 65, 65);
+  --main-font-family: jakarta_bold, Arial, cursive;
+}
 
-  .content {
-    padding: 20px;
-    margin-left: 250px; 
-  }
+.cm-content {
+  padding: 20px;
+  margin-left: 250px; 
+}
 
 /* ============================TITLE================================= */
 
-.title-container {
-    display: flex;
-    padding-top: 3em;
-    justify-content: center;
-  }
-  
-  .title{
-    font-family: var(--main-font-family);
-    font-size: 1.5em;
-  }
-  
-  /* Ipad mini size */
-  @media (max-width: 768px) { 
-    .title {
+.cm-title-container {
+  display: flex;
+  padding-top: 3em;
+  justify-content: center;
+}
+
+.cm-title {
+  font-family: var(--main-font-family);
+  font-size: 1.5em;
+}
+
+/* Ipad mini size */
+@media (max-width: 768px) { 
+  .cm-title {
       font-size: 1.4em;
-    }
   }
-  
-  /* Iphone 14 pro max size */
-  @media (max-width: 430px) {
-    .title {
+}
+
+/* Iphone 14 pro max size */
+@media (max-width: 430px) {
+  .cm-title {
       font-size: 1.2em;
-    }
   }
+}
 
-  /* ============================ GRID ================================= */
+/* ============================ GRID ================================= */
 
-  .grid-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr; 
-    gap: 15px;
-    max-width: 60em;
-    margin: 0 auto;
-    box-shadow: 4px 4px 8px 8px rgba(0, 0, 0, 0.2);
-    border-radius: 1.5em;
-    padding: 2em;
+.cm-grid-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr; 
+  gap: 15px;
+  max-width: 60em;
+  margin: 0 auto;
+  box-shadow: 4px 4px 8px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 1.5em;
+  padding: 2em;
+}
+
+@media (max-width: 1200px) {
+  .cm-grid-container {
+      grid-template-columns: 1fr 1fr 1fr 1fr; 
   }
+}
 
-  @media (max-width: 1200px) {
-    .grid-container {
-      grid-template-columns: 1fr 1fr; 
-    }
-  }
-  
-  @media (max-width: 768px) {
-    .grid-container {
+@media (max-width: 768px) {
+  .cm-grid-container {
       grid-template-columns: 1fr; 
-    }
   }
-  
-  @media (max-width: 480px) {
-    .grid-container {
+}
+
+@media (max-width: 480px) {
+  .cm-grid-container {
       grid-template-columns: 1fr;
-    }
   }
-  
-  
-  .grid-container label {
-    font-weight: bold;
-    margin-bottom: 5px;
-    align-content: center;
-  }
-  
-  .grid-container input[type="text"],
-  .grid-container select {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-family: var(--main-font-family);
-    font-size: 1rem;
-  }
-  
-  .requirements {
-    grid-column: span 2; 
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-right: 2em;
-  }
-  
-  .requirements label {
-    font-weight: normal;
-  }
-  
-  .requirements input[type="text"] {
-    margin-bottom: 5px;
-    width: 8em;
-    font-family: var(--main-font-family);
-    font-size: 1rem;
-  }
-  
-  .requirements a {
-    color: #007bff;
-    text-decoration: underline;
-    cursor: pointer;
-  }
+}
 
-  .new-requerimient{
-    display: grid;
-    grid-template-columns: 1fr;
-    width: 100%;
-    background-color: #45a049;
-  }
-  
-  /* Botón de confirmación */
-  .grid-container .confirm-button {
-    grid-column: 1 / -1; 
-    justify-self: center; 
-    margin-top: 20px;
-    padding: 10px 20px;
-    font-size: 1em;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-    width: 10em;
-    text-decoration: none;
-  }
-  
-  .confirm-button:hover {
-    background-color: #45a049;
-  }
+.cm-grid-container label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  align-content: center;
+}
 
-  .input-text-box{
-    width: auto !important;
-    font-family: var(--main-font-family);
-    font-size: 1rem;
-  }
+.cm-grid-container input[type="text"],
+.cm-grid-container select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-family: var(--main-font-family);
+  font-size: 1rem;
+}
 
-  .input-date {
-    width: auto;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 1rem;
-    font-family: var(--main-font-family);
-  }
+.cm-requirements {
+  grid-column: span 2; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 2em;
+}
+
+.cm-requirements label {
+  font-weight: normal;
+}
+
+.cm-requirements input[type="text"] {
+  margin-bottom: 5px;
+  width: 8em;
+  font-family: var(--main-font-family);
+  font-size: 1rem;
+}
+
+.cm-requirements a {
+  color: #007bff;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.cm-new-requirement {
+  display: grid;
+  grid-template-columns: 1fr;
+  width: 100%;
+  background-color: #45a049;
+}
+
+/* Botón de confirmación */
+.cm-grid-container .cm-confirm-button {
+  grid-column: 1 / -1; 
+  justify-self: center; 
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 1em;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  width: 10em;
+  text-decoration: none;
+}
+
+.cm-confirm-button:hover {
+  background-color: #45a049;
+}
+
+.cm-input-text-box {
+  width: auto !important;
+  font-family: var(--main-font-family);
+  font-size: 1rem;
+}
+
+.cm-input-date {
+  width: auto;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-family: var(--main-font-family);
+}
