@@ -361,9 +361,22 @@ label {
 }
 
 .apply-button{
-  width: 7em;
-  height: 2em;
+  background-color: #ccc;
+  width: 5em;
   border-radius: 0.5em;
   border-width: 1px;
-  background-color: rgb(210, 209, 209);
+  border-style: solid; 
+  border-color: #000; 
+  padding-right: 0.7em;
+  padding-left: 0.7em;
+  padding-bottom: 0.1em;
+  padding-top: 0.1em;
+  text-decoration: none;
+  font-family: var(--main-font-family);
+  font-size: 0.9em;
+  color: black;
+}
+
+.apply-button:hover{
+  background-color: #6565c4ae;
 }

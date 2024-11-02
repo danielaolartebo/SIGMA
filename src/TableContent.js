@@ -1,6 +1,7 @@
 import './App.css';
 import { useState, useEffect} from 'react';
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 function TableContent() {
     const [column, setColumn] = useState([]);
@@ -69,7 +70,7 @@ function TableContent() {
                                     {columnNames[c] || c}
                                 </th>
                             ))}
-                            <th className="table-head"> Aplicar</th>
+                            <th className="table-head"> ¿Interesad@? </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -90,7 +91,7 @@ function TableContent() {
                                     </div>
                                 </td>
                                 <td className="table-data">
-                                    <button className='apply-button'>Aplicar</button>
+                                    <Link to="/ApplyMonitoria" type="submit" className="apply-button">Aplicar</Link>
                                 </td>
                             </tr>
                         ))}

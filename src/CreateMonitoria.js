@@ -65,7 +65,7 @@ function CreateMonitoria() {
       <div className="content">
         {/* Title begins */}
         <div className="title-container">
-          <h2 className="title">Postulación a Monitor</h2>
+          <h2 className="title">Crear monitoria</h2>
         </div>
         {/* Title ends */}
 
