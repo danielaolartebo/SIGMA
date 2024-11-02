@@ -4,6 +4,7 @@ import Navbar from './Navbar';
 import TableContent from './TableContent';
 import Dropdown from './Filters';
 import Login from './Login'; 
+import Task from './Task'; 
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 
 function App() {
@@ -13,7 +14,7 @@ function App() {
   return (
     <div className="App">
       {/* Mostrar Navbar solo si no estamos en /Login */}
-      {location.pathname !== '/Login' && <Navbar />}
+      {location.pathname !== '/Login' && location.pathname !== '/Task' && <Navbar />}
       
       <Routes>
         {/* Ruta predeterminada */}
@@ -39,12 +40,13 @@ function App() {
 
         {/* Ruta para Login */}
         <Route path="/Login" element={<Login />} />
+        {/* Route for Task */}
+        <Route path="/Task" element={<Task />} />
       </Routes>
     </div>
   );
 }
 
-// Envolver App en Router para que useLocation funcione correctamente
 export default function WrappedApp() {
   return (
     <Router>

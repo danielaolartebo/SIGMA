@@ -10,6 +10,10 @@ function Login() {
         navigate('/'); // Redirige a la página principal
     };
 
+    const handleLoginClick = () => {
+      navigate('/Task'); // Redirige a la página principal
+  };
+
     useEffect(() => {
         // Añadir clase al body cuando el componente Login se monta
         document.body.classList.add('login-background');
@@ -37,7 +41,7 @@ function Login() {
                     <input className="inputs-login" type="password" name="pswd" placeholder=" Clave" required />
                 </div>
                 <div className="login-btn-container-login">
-                    <button className="login-btn-login" type="submit">Iniciar sesión</button>
+                    <button className="login-btn-login" id="login-btn-login" type="submit" onClick={handleLoginClick}>Iniciar sesión</button>
                 </div>
             </form>
         </div>

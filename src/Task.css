@@ -1,0 +1,53 @@
+:root {
+    --main-color: #5454e8;
+	--hover-color: rgb(66, 65, 65);
+}
+
+.vertical-navbar {
+    width: 14em;
+    background-color: var(--main-color);
+    height: 100vh; 
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    display: flex;
+    flex-direction: column; 
+    padding-top: 20px; 
+    z-index: 1000; 
+  }
+  
+  .menu-items {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+  }
+  
+  .menu-items a {
+    color: white; 
+    padding: 15px; 
+    text-decoration: none; 
+    transition: background-color 0.3s;
+  }
+  
+  .menu-items a:hover {
+    color: black;
+  }
+  
+  .logout-container {
+    margin-top: 440px;
+  }
+  
+  .logout-button {
+    color: white; 
+    padding: 15px; 
+    text-decoration: none; 
+    background-color: gray; 
+    border-radius: 5px;
+    transition: background-color 0.3s; 
+    text-align: center;
+  }
+  
+  .logout-button:hover {
+    background-color: var(--hover-color); 
+  }
+  
