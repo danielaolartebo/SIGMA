@@ -1,0 +1,8 @@
+{
+    "faculty": [
+        { "id": 1, "name": "Negocios y Economía" },
+        { "id": 2, "name": "Ingeniería, Diseño y Ciencias Aplicadas" },
+        { "id": 3, "name": "Ciencias Humanas" },
+        { "id": 4, "name": "Ciencias de la Salud" }
+    ]
+}

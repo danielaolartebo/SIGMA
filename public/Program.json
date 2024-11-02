@@ -1,0 +1,15 @@
+{
+    "program": [
+        { "id": 1, "name": "Ingeniería de Energía" },
+        { "id": 2, "name": "Ingeniería de Sistemas" },
+        { "id": 3, "name": "Ingeniería Telemática" },
+        { "id": 4, "name": "Ingeniería Industrial" },
+        { "id": 5, "name": "Ingeniería Bioquímica" },
+        { "id": 6, "name": "Biología con concentraciones en conservación" },
+        { "id": 7, "name": "Bioquímica" },
+        { "id": 8, "name": "Química con énfasis en" },
+        { "id": 9, "name": "Química Farmacéutica" },
+        { "id": 10, "name": "Diseño de Medios Interactivos" },
+        { "id": 11, "name": "Diseño Industrial" }
+    ]
+}
