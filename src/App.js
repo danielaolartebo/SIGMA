@@ -6,6 +6,7 @@ import Dropdown from './Filters';
 import Login from './Login'; 
 import Task from './Task'; 
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
+import CreateMonitoria from './CreateMonitoria';
 
 function App() {
   // Hook para obtener la ruta actual
@@ -13,8 +14,8 @@ function App() {
 
   return (
     <div className="App">
-      {/* Mostrar Navbar solo si no estamos en /Login */}
-      {location.pathname !== '/Login' && location.pathname !== '/Task' && <Navbar />}
+     {/* Mostrar Navbar solo en la ruta principal */}
+     {location.pathname === '/' && <Navbar />}
       
       <Routes>
         {/* Ruta predeterminada */}
@@ -42,6 +43,8 @@ function App() {
         <Route path="/Login" element={<Login />} />
         {/* Route for Task */}
         <Route path="/Task" element={<Task />} />
+        {/* Route for Create Monitoria */}
+        <Route path="/CreateMonitoria" element={<CreateMonitoria />} />
       </Routes>
     </div>
   );

@@ -15,11 +15,26 @@
     padding-top: 20px; 
     z-index: 1000; 
   }
+
+  /* Ipad mini size */
+@media (max-width: 768px) { 
+    .vertical-navbar {
+        width: 14em;
+    }
+  }
+  
+  /* Iphone 14 pro max size */
+  @media (max-width: 430px) {
+    .vertical-navbar {
+        width: 9em;
+    }
+    }
   
   .menu-items {
     display: flex;
     flex-direction: column;
     padding: 10px;
+    align-items: center;
   }
   
   .menu-items a {
@@ -33,10 +48,6 @@
     color: black;
   }
   
-  .logout-container {
-    margin-top: 440px;
-  }
-  
   .logout-button {
     color: white; 
     padding: 15px; 
@@ -44,7 +55,9 @@
     background-color: gray; 
     border-radius: 5px;
     transition: background-color 0.3s; 
-    text-align: center;
+    width: 7em;
+    height: 1em;
+    justify-content: center;
   }
   
   .logout-button:hover {
