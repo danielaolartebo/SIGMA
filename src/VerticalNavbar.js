@@ -11,6 +11,7 @@ function VerticalNavbar() {
         <Link to="">Mi perfil</Link>
         <Link to="/CreateMonitoria">Crear monitoria</Link>
         <Link to="/">Postulaciones</Link>
+        <Link to="">Mis postulantes</Link>
         <Link to="">Reportes</Link>
       </div>
     </div>

@@ -355,6 +355,11 @@ label {
   width: 5em;
   border-radius: 0.5em;
   border-width: 1px;
+  padding-right: 0.7em;
+  padding-left: 0.7em;
+  padding-bottom: 0.1em;
+  padding-top: 0.1em;
+  font-size: 0.9em;
 }
 
 .view-button:hover + .requirement-text {
@@ -385,15 +390,23 @@ label {
 .status-active{
   font-family: var(--main-font-family);
   background-color: #70d67b;
-  border-radius: 2em;
+  border-radius: 0.5em;
   width: 4em;
-  font-size: 1em;
+  font-size: 0.9em;
+  padding-right: 0.7em;
+  padding-left: 0.7em;
+  padding-bottom: 0.1em;
+  padding-top: 0.1em;
 }
 
 .status-inactive{
   font-family: var(--main-font-family);
   background-color: #f0848b;
-  border-radius: 2em;
+  border-radius: 0.5em;
   width: 4em;
-  font-size: 1em;
+  font-size: 0.9em;
+  padding-right: 0.7em;
+  padding-left: 0.7em;
+  padding-bottom: 0.1em;
+  padding-top: 0.1em;
 }

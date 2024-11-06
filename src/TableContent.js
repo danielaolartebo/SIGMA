@@ -1,7 +1,6 @@
 import './App.css';
 import { useState, useEffect } from 'react';
 import React from 'react';
-import { Link } from 'react-router-dom';
 
 function TableContent() {
     const [column, setColumn] = useState([]);
@@ -10,8 +9,9 @@ function TableContent() {
     const recordsPerPage = 6;
 
     const columnNames = {
-        id: "NRC",
-        name: "Nombre de Monitoria",
+        id: "Identificador",
+        period: "Periodo",
+        name: "Curso",
         startPostulation: "Inicio de Convocatoria",
         endPostulation: "Fin de Convocatoria",
         requirement: "Requisitos"
@@ -62,7 +62,7 @@ function TableContent() {
         if (currentDate >= startDate && currentDate <= endDate) {
             return { className: "status-active", text: "Activo" };
         } else {
-            return { className: "status-inactive", text: "Inactivo" };
+            return { className: "status-inactive", text: "Vencido" };
         }
     };
 
@@ -87,6 +87,7 @@ function TableContent() {
                             return (
                                 <tr key={i}>
                                     <td className="table-data">{record.id}</td>
+                                    <td className="table-data">{record.period}</td>
                                     <td className="table-data">{record.name}</td>
                                     <td className="table-data">{record.startPostulation}</td>
                                     <td className="table-data">{record.endPostulation}</td>
@@ -106,7 +107,7 @@ function TableContent() {
                                         </div>
                                     </td>
                                     <td className="table-data">
-                                        <Link to="/ApplyMonitoria" type="submit" className="apply-button">Aplicar</Link>
+                                        <div className="apply-button">Aplicar</div>
                                     </td>
                                 </tr>
                             );

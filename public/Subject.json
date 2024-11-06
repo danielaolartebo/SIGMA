@@ -1,0 +1,20 @@
+{
+    "subject": [
+        { "id": 1, "name": "Computación en Internet I" },
+        { "id": 2, "name": "Arquitectura de Hardware" },
+        { "id": 3, "name": "Sistemas Intensivos en Datos I" },
+        { "id": 4, "name": "Ingeniería de Software II" },
+        { "id": 5, "name": "Gerencia de Proyectos" },
+        { "id": 6, "name": "Ingenieria de Software III" },
+        { "id": 7, "name": "Inteligencia Artificial" },
+        { "id": 8, "name": "Sistemas Intensivos en Datos II" },
+        { "id": 9, "name": "Introducción a las TIC" },
+        { "id": 10, "name": "Proyecto Integrador I" },
+        { "id": 11, "name": "APO I" },
+        { "id": 12, "name": "APO II" },
+        { "id": 13, "name": "APO III" },
+        { "id": 14, "name": "Estructuras Discretas I" },
+        { "id": 15, "name": "Estructuras Discretas II" },
+        { "id": 16, "name": "Estructuras Discretas III" }
+    ]
+}

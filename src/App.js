@@ -7,7 +7,6 @@ import Login from './Login';
 import Task from './Task'; 
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 import CreateMonitoria from './CreateMonitoria';
-import ApplyMonitoria from './ApplyMonitoria';
 
 function App() {
   // Hook para obtener la ruta actual
@@ -46,8 +45,7 @@ function App() {
         <Route path="/Task" element={<Task />} />
         {/* Route for Create Monitoria */}
         <Route path="/CreateMonitoria" element={<CreateMonitoria />} />
-        {/* Route for Apply to Monitoria */}
-        <Route path="/ApplyMonitoria" element={<ApplyMonitoria />} />
+
 
       </Routes>
     </div>

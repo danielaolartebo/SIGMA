@@ -6,10 +6,17 @@ import VerticalNavbar from './VerticalNavbar';
 
 function CreateMonitoria() {
 
+    const [column, setColumn] = useState([]);
+    const [records, setRecords] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const recordsPerPage = 2;
+
     const [faculties, setFaculties] = useState([]); // State for Faculty options
     const [programs, setPrograms] = useState([]); // State for Program options
+    const [subject, setSubject] = useState([]); // State for Subject options
     const [selectedFaculty, setSelectedFaculty] = useState(""); // Selected Faculty
     const [selectedProgram, setSelectedProgram] = useState(""); // Selected Program
+    const [selectedSubject, setSelectedSubject] = useState(""); // Selected Subject
 
     // Fetch Faculty options
     useEffect(() => {
@@ -49,6 +56,25 @@ function CreateMonitoria() {
             .catch(error => console.error('Error fetching program data:', error));
     }, []);
 
+    // Fetch Subject options
+    useEffect(() => {
+        fetch('http://localhost:3000/Subject.json')
+            .then(res => {
+                if (!res.ok) {
+                    throw new Error(`HTTP error! Status: ${res.status}`);
+                }
+                return res.json();
+            })
+            .then(data => {
+                if (data.subject) {
+                    setSubject(data.subject);
+                } else {
+                    console.error("Program data format is incorrect.");
+                }
+            })
+            .catch(error => console.error('Error fetching program data:', error));
+    }, []);
+
     // Handle change for Faculty dropdown
     const handleFacultyChange = (event) => {
         setSelectedFaculty(event.target.value);
@@ -59,8 +85,35 @@ function CreateMonitoria() {
         setSelectedProgram(event.target.value);
     };
 
+    // Handle change for Subject dropdown
+    const handleSubjectChange = (event) => {
+        setSelectedSubject(event.target.value);
+    };
+
+    const indexOfLastRecord = currentPage * recordsPerPage;
+    const indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
+    const currentRecords = records.slice(indexOfFirstRecord, indexOfLastRecord);
+
+    const totalPages = Math.ceil(records.length / recordsPerPage);
+
+    const nextPage = () => {
+        if (currentPage < totalPages) {
+            setCurrentPage(currentPage + 1);
+        }
+    };
+
+    const prevPage = () => {
+        if (currentPage > 1) {
+            setCurrentPage(currentPage - 1);
+        }
+    };
+
     return (
         <div className="cm-task-container">
+            {/* Load file button starts */}
+            <button className="top-right-button">Cargar datos</button>
+            {/* Load file button ends */}
+
             <VerticalNavbar />
             <div className="cm-content">
                 {/* Title begins */}
@@ -70,9 +123,6 @@ function CreateMonitoria() {
                 {/* Title ends */}
 
                 <form className="cm-grid-container">
-                    {/* Nombre */}
-                    <label>Nombre</label>
-                    <input type="text" placeholder="Nombre" className="cm-input-text-box" />
 
                     {/* Facultad */}
                     <label>Facultad</label>
@@ -103,9 +153,17 @@ function CreateMonitoria() {
                     </select>
 
                     {/* Materia/Curso */}
-                    <label>Materia/Curso</label>
-                    <select>
-                        <option>Seleccionar</option>
+                    <label>Curso</label>
+                    <select className="cm-program"
+                            id="subject-dropdown" 
+                            value={selectedSubject} 
+                            onChange={handleSubjectChange}>
+                        <option value=""> Seleccionar </option>
+                        {subject.map(subject => (
+                            <option key={subject.id} value={subject.id}>
+                                {subject.name}
+                            </option>
+                        ))}
                     </select>
 
                     {/* Periodo académico */}
@@ -114,11 +172,6 @@ function CreateMonitoria() {
                         <option>Seleccionar</option>
                     </select>
 
-                    {/* Grupo */}
-                    <label>Grupo</label>
-                    <select>
-                        <option>Seleccionar</option>
-                    </select>
 
                     {/* Inicio de convocatoria en dos columnas */}
                     <label>Inicio de convocatoria</label>
@@ -128,22 +181,85 @@ function CreateMonitoria() {
                     <label>Fin de convocatoria</label>
                     <input type="date" className="cm-input-date" />
 
+
                     {/* Requisitos */}
+                    {/*
                     <label>Promedio acumulado:</label>
                     <input type="text" placeholder="4.5" className="cm-input-text-box"/>
                     <label>Promedio materia:</label>
-                    <input type="text" placeholder="4.5" className="cm-input-text-box"/>
+                    <input type="text" placeholder="4.5" className="cm-input-text-box"/> */}
 
                     {/* Añadir nuevo requisito */}  
-                    <label></label>
+                   {/*  <label></label>
                     <Link to="#"></Link>
 
                     <label></label>
-                    <Link to="#">¿Añadir nuevo requisito?</Link>
+                    <Link to="#">¿Añadir nuevo requisito?</Link> */}
                     
                     {/* Botón de confirmación */}
                     <Link to="/" type="submit" className="cm-confirm-button">Confirmar</Link>
                 </form>
+
+            {/* Table starts */}
+
+            <div className="main-container">
+                <div className='table-main-container'>
+                    <table className="table" id="table">
+                        <thead>
+                            <tr>
+                                <th className="table-head"> Facultad </th>
+                                <th className="table-head"> Programa </th>
+                                <th className="table-head"> Materia/Curso </th>
+                                <th className="table-head"> Periodo académico </th>
+                                <th className="table-head"> Inicio de convocatoria</th>
+                                <th className="table-head"> Fin de convocatoria</th>
+                                <th className="table-head"> </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                                <tr>
+                                    <td className="table-data"> Ingeniería, Diseño y Ciencias Aplicadas </td>
+                                    <td className="table-data"> Ingeniería de Sistemas </td>
+                                    <td className="table-data"> Computación en Internet I </td>
+                                    <td className="table-data"> 2024-2 </td>
+                                    <td className="table-data"> 01/11/2024 </td>
+                                    <td className="table-data"> 20/11/2024 </td>
+                                    <td className="table-data">
+                                        <div className="requirement-container">
+                                            <button className="edit-button">Editar</button>
+                                            <button className="cancel-button">Eliminar</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                    </tbody>
+                    </table>
+                </div>
+
+            <div className="div-pagination">
+                <div className="pagination-info">
+                    Mostrando {indexOfFirstRecord + 1} - {Math.min(indexOfLastRecord, records.length)} de {records.length} resultados
+                </div>
+
+                <div className="main-pagination">
+                    <div className="pagination">
+                        <button onClick={prevPage} disabled={currentPage === 1}>Anterior</button>
+                        {[...Array(totalPages)].map((_, index) => (
+                            <button 
+                                key={index} 
+                                onClick={() => setCurrentPage(index + 1)}
+                                className={currentPage === index + 1 ? 'active' : ''}
+                            >
+                                {index + 1}
+                            </button>
+                        ))}
+                        <button onClick={nextPage} disabled={currentPage === totalPages}>Siguiente</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {/* Table ends */}
+
             </div>
         </div>
     );
