@@ -1,0 +1,7 @@
+{
+    "state": [
+        { "id": 1, "name": "Activo" },
+        { "id": 2, "name": "Vencido" },
+        { "id": 3, "name": "Inactivo" }
+    ]
+}
