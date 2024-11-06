@@ -176,6 +176,7 @@ label {
 .table-data{
   padding-top: 1em;
   padding-bottom: 1em;
+  justify-items: center;
 }
 
 .table-head{
@@ -379,4 +380,20 @@ label {
 
 .apply-button:hover{
   background-color: #6565c4ae;
+}
+
+.status-active{
+  font-family: var(--main-font-family);
+  background-color: #70d67b;
+  border-radius: 2em;
+  width: 4em;
+  font-size: 1em;
+}
+
+.status-inactive{
+  font-family: var(--main-font-family);
+  background-color: #f0848b;
+  border-radius: 2em;
+  width: 4em;
+  font-size: 1em;
 }

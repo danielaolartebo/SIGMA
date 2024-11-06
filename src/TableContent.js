@@ -1,5 +1,5 @@
 import './App.css';
-import { useState, useEffect} from 'react';
+import { useState, useEffect } from 'react';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
@@ -7,9 +7,8 @@ function TableContent() {
     const [column, setColumn] = useState([]);
     const [records, setRecords] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const recordsPerPage = 6; // Número de registros por página
+    const recordsPerPage = 6;
 
-    // Mapeo de claves originales a nombres personalizados
     const columnNames = {
         id: "NRC",
         name: "Nombre de Monitoria",
@@ -37,25 +36,33 @@ function TableContent() {
             .catch(error => console.error('Error fetching data:', error));
     }, []);
 
-    // Calcula los registros de la página actual
     const indexOfLastRecord = currentPage * recordsPerPage;
     const indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
     const currentRecords = records.slice(indexOfFirstRecord, indexOfLastRecord);
 
-    // Calcula el número total de páginas
     const totalPages = Math.ceil(records.length / recordsPerPage);
 
-    // Función para ir a la página siguiente
     const nextPage = () => {
         if (currentPage < totalPages) {
             setCurrentPage(currentPage + 1);
         }
     };
 
-    // Función para ir a la página anterior
     const prevPage = () => {
         if (currentPage > 1) {
             setCurrentPage(currentPage - 1);
+        }
+    };
+
+    const checkStatus = (startPostulation, endPostulation) => {
+        const currentDate = new Date();
+        const startDate = new Date(startPostulation.split('/').reverse().join('-'));
+        const endDate = new Date(endPostulation.split('/').reverse().join('-'));
+    
+        if (currentDate >= startDate && currentDate <= endDate) {
+            return { className: "status-active", text: "Activo" };
+        } else {
+            return { className: "status-inactive", text: "Inactivo" };
         }
     };
 
@@ -70,42 +77,49 @@ function TableContent() {
                                     {columnNames[c] || c}
                                 </th>
                             ))}
+                            <th className="table-head"> Estado </th>
                             <th className="table-head"> ¿Interesad@? </th>
                         </tr>
                     </thead>
                     <tbody>
-                        {currentRecords.map((record, i) => (
-                            <tr key={i}>
-                                <td className="table-data">{record.id}</td>
-                                <td className="table-data">{record.name}</td>
-                                <td className="table-data">{record.startPostulation}</td>
-                                <td className="table-data">{record.endPostulation}</td>
-                                <td className="table-data">
-                                    <div className="requirement-container">
-                                        <button className="view-button">Ver</button>
-                                        <span className="requirement-text">
-                                            {record.requirement.split('\n').map((line, index) => (
-                                                <span key={index}>{line}<br /></span>
-                                            ))}
-                                        </span>
-                                    </div>
-                                </td>
-                                <td className="table-data">
-                                    <Link to="/ApplyMonitoria" type="submit" className="apply-button">Aplicar</Link>
-                                </td>
-                            </tr>
-                        ))}
+                        {currentRecords.map((record, i) => {
+                            const status = checkStatus(record.startPostulation, record.endPostulation);
+                            return (
+                                <tr key={i}>
+                                    <td className="table-data">{record.id}</td>
+                                    <td className="table-data">{record.name}</td>
+                                    <td className="table-data">{record.startPostulation}</td>
+                                    <td className="table-data">{record.endPostulation}</td>
+                                    <td className="table-data">
+                                        <div className="requirement-container">
+                                            <button className="view-button">Ver</button>
+                                            <span className="requirement-text">
+                                                {record.requirement.split('\n').map((line, index) => (
+                                                    <span key={index}>{line}<br /></span>
+                                                ))}
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td className="table-data">
+                                        <div className={status.className}>
+                                            {status.text}
+                                        </div>
+                                    </td>
+                                    <td className="table-data">
+                                        <Link to="/ApplyMonitoria" type="submit" className="apply-button">Aplicar</Link>
+                                    </td>
+                                </tr>
+                            );
+                        })}
                     </tbody>
                 </table>
             </div>
 
             <div className="div-pagination">
-                {/* Mostrar número de resultados */}
                 <div className="pagination-info">
                     Mostrando {indexOfFirstRecord + 1} - {Math.min(indexOfLastRecord, records.length)} de {records.length} resultados
                 </div>
 
-                {/* Controles de paginación */}
                 <div className="main-pagination">
                     <div className="pagination">
                         <button onClick={prevPage} disabled={currentPage === 1}>Anterior</button>
@@ -127,3 +141,5 @@ function TableContent() {
 }
 
 export default TableContent;
+
+

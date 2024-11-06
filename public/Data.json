@@ -2,22 +2,22 @@
     "monitoria":[{
         "id": 1,
         "name": "Computación en Internet I",
-        "startPostulation": "13/07/2024",
-        "endPostulation": "10/08/2024",
+        "startPostulation": "01/11/2024",
+        "endPostulation": "20/11/2024",
         "requirement": "Promedio Acumulado >= 4.5\nPromedio de Materia >= 4.5"
     },
     {
         "id": 2,
         "name": "Arquitectura de Hardware",
-        "startPostulation": "13/07/2024",
-        "endPostulation": "10/08/2024",
+        "startPostulation": "01/11/2024",
+        "endPostulation": "04/11/2024",
         "requirement": "Promedio Acumulado >= 4.5\nPromedio de Materia >= 4.5"
     },
     {
         "id": 3,
         "name": "Sistemas Intensivos en Datos I",
-        "startPostulation": "13/07/2024",
-        "endPostulation": "10/08/2024",
+        "startPostulation": "01/11/2024",
+        "endPostulation": "15/11/2024",
         "requirement": "Promedio Acumulado >= 4.5\nPromedio de Materia >= 4.5"
     },
     {
