@@ -7,6 +7,7 @@ import Login from './Login';
 import Task from './Task'; 
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 import CreateMonitoria from './CreateMonitoria';
+import Applicants from './Applicants';
 
 function App() {
   // Hook para obtener la ruta actual
@@ -41,12 +42,15 @@ function App() {
 
         {/* Ruta para Login */}
         <Route path="/Login" element={<Login />} />
+
         {/* Route for Task */}
         <Route path="/Task" element={<Task />} />
+
         {/* Route for Create Monitoria */}
         <Route path="/CreateMonitoria" element={<CreateMonitoria />} />
-
-
+        
+        {/* Route for Applicants */}
+        <Route path="/Applicants" element={<Applicants />} />
       </Routes>
     </div>
   );

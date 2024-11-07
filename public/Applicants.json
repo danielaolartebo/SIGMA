@@ -1,0 +1,74 @@
+{
+    "applicants": [
+        {
+            "name": "Sofia",
+            "lastname": "Gomez",
+            "code": "A00451234",
+            "pacumulado": "4.5",
+            "pmateria": "4.1"
+        },
+        {
+            "name": "Carlos",
+            "lastname": "Ramirez",
+            "code": "A00459876",
+            "pacumulado": "4.7",
+            "pmateria": "3.8"
+        },
+        {
+            "name": "Valentina",
+            "lastname": "Lopez",
+            "code": "A00453421",
+            "pacumulado": "4.6",
+            "pmateria": "4.5"
+        },
+        {
+            "name": "Diego",
+            "lastname": "Martinez",
+            "code": "A00457689",
+            "pacumulado": "3.7",
+            "pmateria": "3.5"
+        },
+        {
+            "name": "Laura",
+            "lastname": "Torres",
+            "code": "A00451298",
+            "pacumulado": "4.8",
+            "pmateria": "4.7"
+        },
+        {
+            "name": "Andres",
+            "lastname": "Garcia",
+            "code": "A00458934",
+            "pacumulado": "3.6",
+            "pmateria": "3.7"
+        },
+        {
+            "name": "Maria",
+            "lastname": "Fernandez",
+            "code": "A00457456",
+            "pacumulado": "4.3",
+            "pmateria": "4.2"
+        },
+        {
+            "name": "Javier",
+            "lastname": "Moreno",
+            "code": "A00456723",
+            "pacumulado": "4.1",
+            "pmateria": "4.0"
+        },
+        {
+            "name": "Camila",
+            "lastname": "Hernandez",
+            "code": "A00453218",
+            "pacumulado": "4.7",
+            "pmateria": "4.5"
+        },
+        {
+            "name": "Luis",
+            "lastname": "Diaz",
+            "code": "A00452123",
+            "pacumulado": "3.8",
+            "pmateria": "3.9"
+        }
+    ]
+}
