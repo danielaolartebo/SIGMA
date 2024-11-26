@@ -36,6 +36,34 @@ function TableContent() {
             .catch(error => console.error('Error fetching data:', error));
     }, []);
 
+    const handleApplyClick = async (monitoringId,status) => {
+        const data = {
+            monitoringId:monitoringId,
+            userId:localStorage.getItem('userId')
+        }
+        try{
+            if(status === "Activo"){
+                const response = await fetch('http://localhost:5433/candidature/create', {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                  });
+                  
+                if(response.ok){
+                    console.log('A candidature have been created')
+                }  
+            }
+            else{
+                console.log('The time has expired')
+            }
+        }
+        catch(error){
+            console.error('Error in fetching', error)
+        }
+    };
+
     const indexOfLastRecord = currentPage * recordsPerPage;
     const indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
     const currentRecords = records.slice(indexOfFirstRecord, indexOfLastRecord);
@@ -107,7 +135,7 @@ function TableContent() {
                                         </div>
                                     </td>
                                     <td className="table-data">
-                                        <div className="apply-button">Aplicar</div>
+                                        <div className="apply-button" onClick={() => handleApplyClick(record.id, status.text)}>Aplicar</div>
                                     </td>
                                 </tr>
                             );
