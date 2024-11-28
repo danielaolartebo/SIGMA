@@ -6,6 +6,7 @@ function VerticalNavbar() {
 
   const handleClose= () =>{
     localStorage.setItem('role','')
+    localStorage.setItem('userId','')
   }
   return (
     <div className="vertical-navbar">

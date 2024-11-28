@@ -1,11 +1,21 @@
 import './App.css';
 import { useState, useEffect } from 'react';
 import React from 'react';
+import Popup from './PopUp';
+import { useMemo } from 'react';
+import PopupCheck from './PopUpCheck';
+import Alert from './Alert';
 
 function TableContent() {
     const [column, setColumn] = useState([]);
     const [records, setRecords] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
+    const [isOpen, setOpen] = useState(false)
+    const [isOpenCheck, setOpenCheck] = useState(false)
+    const [message, setMessage] = useState("")
+    const [idMonitoring, setIdMonitoring] = useState("")
+    const [state, setState] = useState("")
+    const [alertVisible, setAlertVisible] = useState(false);
     const recordsPerPage = 6;
 
     const columnNames = {
@@ -22,6 +32,9 @@ function TableContent() {
     };
 
     useEffect(() => {
+        if(localStorage.getItem('role') === 'student'){
+            setAlertVisible(!alertVisible)
+        }
         fetch('http://localhost:5433/monitoring/getA')
             .then(res => {
                 if (!res.ok) {
@@ -40,13 +53,27 @@ function TableContent() {
             .catch(error => console.error('Error fetching data:', error));
     }, []);
 
-    const handleApplyClick = async (monitoringId,status) => {
+    const handlePopUpCheck = (id,status) =>{
+        if(localStorage.getItem('role') !=='student'){
+            setMessage('Tiene que iniciar sesión como estudiante')
+            setOpen(!isOpen)
+        }else{
+            setIdMonitoring(id)
+            setState(status)
+            setOpenCheck(!isOpenCheck)
+        }
+        
+    }
+
+    const handleApplyClick = async () => {
+        setOpenCheck(!isOpenCheck);
+        console.log(localStorage.getItem('userId'))
         const data = {
-            monitoringId:monitoringId,
+            monitoringId:idMonitoring,
             userId:localStorage.getItem('userId')
         }
         try{
-            if(status === "Activo"){
+            if(state === "Activo"){
                 const response = await fetch('http://localhost:5433/candidature/create', {
                     method: 'POST',
                     headers: {
@@ -54,18 +81,33 @@ function TableContent() {
                     },
                     body: JSON.stringify(data)
                   });
-                  
+                  const mess = await response.text()
                 if(response.ok){
-                    console.log('A candidature have been created')
+                    setMessage(mess)
+                    setOpen(!isOpen)
+                }
+                else{
+                    setMessage(mess)
+                    setOpen(!isOpen)
                 }  
             }
-            else{
-                console.log('The time has expired')
+            else if(state === "Vencido"){
+                setMessage('El tiempo ha expirado')
+                setOpen(!isOpen)
             }
+            else{
+                setMessage('La fecha está inactiva')
+                setOpen(!isOpen)
+            }
+            setOpen(!isOpen)
         }
         catch(error){
             console.error('Error in fetching', error)
         }
+    };
+
+    const closeAlert = () => {
+        setAlertVisible(!alertVisible);
     };
 
     const indexOfLastRecord = currentPage * recordsPerPage;
@@ -88,18 +130,57 @@ function TableContent() {
 
     const checkStatus = (startPostulation, endPostulation) => {
         const currentDate = new Date();
-        const startDate = new Date(startPostulation?.split('/').reverse().join('-'));
-        const endDate = new Date(endPostulation?.split('/').reverse().join('-'));
+        const [year, month, day] = startPostulation?.split('T')[0].split("-").map(Number);
+        const [year2, month2, day2] = endPostulation?.split('T')[0].split("-").map(Number);
+        const startDate = new Date(year, month - 1, day);
+        const endDate = new Date(year2, month2 - 1, day2);
     
         if (currentDate >= startDate && currentDate <= endDate) {
             return { className: "status-active", text: "Activo" };
-        } else {
+        } else if(currentDate > startDate && currentDate> endDate){
             return { className: "status-inactive", text: "Vencido" };
+        }else{
+            return { className: "status-inactive", text: "Inactivo" };
         }
     };
 
+    const processedRecords = useMemo(() => {
+        return currentRecords.map(record => {
+            const startDateR = record.start.split('T')[0];
+            const endDateR = record.finish.split('T')[0];
+            return {
+                ...record,
+                startFormatted: startDateR,
+                endFormatted: endDateR,
+            };
+        });
+    }, [currentRecords]);
+
+    const handleClose = () =>{
+        setOpen(!isOpen);
+    }
+
+    const handleCloseCheck = () =>{
+        setOpenCheck(!isOpenCheck);
+    }
+
     return (
         <div className="main-container">
+             <Popup
+                show={isOpen}
+                onClose={() => handleClose()}
+            >
+                {message}
+            </Popup>
+            <PopupCheck
+                show={isOpenCheck}
+                onClose={() => handleCloseCheck()}
+                onApply={() => handleApplyClick()}
+            />
+             <Alert
+                show={alertVisible}
+                onClose={closeAlert}
+             />
             <div className='table-main-container'>
                 <table className="table" id="table">
                     <thead>
@@ -114,16 +195,16 @@ function TableContent() {
                         </tr>
                     </thead>
                     <tbody>
-                        {currentRecords.map((record, i) => {
-                            const status = checkStatus(record.start, record.end);
+                        {processedRecords.map((record, i) => {
+                            const status = checkStatus(record.start, record.finish);
                             return (
                                 <tr key={i}>
                                     <td className="table-data">{record.id}</td>
                                     <td className="table-data">{record.school.name}</td>
                                     <td className="table-data">{record.program.name}</td>
                                     <td className="table-data">{record.course.name}</td>
-                                    <td className="table-data">{Date(record.start)}</td>
-                                    <td className="table-data">{Date(record.end)}</td>
+                                    <td className="table-data">{record.startFormatted}</td>
+                                    <td className="table-data">{record.endFormatted}</td>
                                     <td className="table-data">{record.averageGrade}</td>
                                     <td className="table-data">{record.courseGrade}</td>
                                     <td className="table-data">{record.semester}</td>
@@ -134,7 +215,7 @@ function TableContent() {
                                         </div>
                                     </td>
                                     <td className="table-data">
-                                        <div className="apply-button" onClick={() => handleApplyClick(record.id, status.text)}>Aplicar</div>
+                                        <div className="apply-button" onClick={() => handlePopUpCheck(record.id, status.text)}>Aplicar</div>
                                     </td>
                                 </tr>
                             );

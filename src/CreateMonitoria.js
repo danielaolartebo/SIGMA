@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import VerticalNavbar from './VerticalNavbar';
 import Popup from "./PopUp";
 import { useNavigate } from "react-router-dom";
+import { useMemo } from 'react';
 
 function CreateMonitoria() {
 
@@ -14,6 +15,7 @@ function CreateMonitoria() {
     const recordsPerPage = 2;
     const navigate = useNavigate();
 
+    const [monitories, setMonitories] = useState([]); // State for Monitories list
     const [faculties, setFaculties] = useState([]); // State for Faculty options
     const [programs, setPrograms] = useState([]); // State for Program options
     const [subject, setSubject] = useState([]); // State for Subject options
@@ -25,6 +27,7 @@ function CreateMonitoria() {
     const [selectedFinishDate, setSelectedFinishDate] = useState(""); // Selected FinishDate
     const [isOpen, setIsOpen] = useState(false)
     const [message, setMessage] = useState("")
+    const [change, setChange] = useState(false)
 
     // Fetch Faculty options
     useEffect(() => {
@@ -43,7 +46,44 @@ function CreateMonitoria() {
                 }
             })
             .catch(error => console.error('Error fetching faculty data:', error));
+
+            fetch('http://localhost:5433/monitoring/getA')
+            .then(res => {
+                if (!res.ok) {
+                    throw new Error(`HTTP error! Status: ${res.status}`);
+                }
+                return res.json();
+            })
+            .then(data => {
+                if (data && data.length > 0) {
+                    setRecords(data); 
+                } else {
+                    console.error("Data format is incorrect or 'monitoria' is empty.");
+                }
+            })
+            .catch(error => console.error('Error fetching data:', error));
+        
     }, []);
+
+    useEffect(() => {
+            fetch('http://localhost:5433/monitoring/getA')
+            .then(res => {
+                if (!res.ok) {
+                    throw new Error(`HTTP error! Status: ${res.status}`);
+                }
+                return res.json();
+            })
+            .then(data => {
+                if (data && data.length > 0) {
+                    setRecords(data); 
+                } else {
+                    console.error("Data format is incorrect or 'monitoria' is empty.");
+                }
+            })
+            .catch(error => console.error('Error fetching data:', error));
+        
+    }, [change]);
+
 
     // Fetch Program options
     useEffect(() => {
@@ -181,6 +221,7 @@ function CreateMonitoria() {
 
     const handleClose = () =>{
         setIsOpen(!isOpen)
+        setChange(!change)
     }
 
     const indexOfLastRecord = currentPage * recordsPerPage;
@@ -199,6 +240,26 @@ function CreateMonitoria() {
         if (currentPage > 1) {
             setCurrentPage(currentPage - 1);
         }
+    };
+
+    const processedRecords = useMemo(() => {
+        return currentRecords.map(record => {
+            const startDateR = record.start.split('T')[0];
+            const endDateR = record.finish.split('T')[0];
+            return {
+                ...record,
+                startFormatted: startDateR,
+                endFormatted: endDateR,
+            };
+        });
+    }, [currentRecords]);
+
+    const checkDates = (startPostulation, endPostulation) => {
+        
+        const startDateR = startPostulation.split('T')[0];
+        const endDateR = endPostulation.split('T')[0];
+        
+        return startDateR, endDateR
     };
 
     return (
@@ -329,20 +390,26 @@ function CreateMonitoria() {
                             </tr>
                         </thead>
                         <tbody>
-                                <tr>
-                                    <td className="table-data"> Ingeniería, Diseño y Ciencias Aplicadas </td>
-                                    <td className="table-data"> Ingeniería de Sistemas </td>
-                                    <td className="table-data"> Computación en Internet I </td>
-                                    <td className="table-data"> 2024-2 </td>
-                                    <td className="table-data"> 01/11/2024 </td>
-                                    <td className="table-data"> 20/11/2024 </td>
-                                    <td className="table-data">
-                                        <div className="requirement-container">
-                                            <button className="edit-button">Editar</button>
-                                            <button className="cancel-button">Eliminar</button>
-                                        </div>
-                                    </td>
-                                </tr>
+                                {processedRecords.map((record, i) => {
+                                    
+                                    return (
+                                        <tr key={i}>
+                                            <td className="table-data">{record.school.name}</td>
+                                            <td className="table-data">{record.program.name}</td>
+                                            <td className="table-data">{record.course.name}</td>
+                                            <td className="table-data">{record.semester}</td>
+                                            <td className="table-data">{record.startFormatted}</td>
+                                            <td className="table-data">{record.endFormatted}</td>
+                                            <td className="table-data">
+                                                <div className="requirement-container">
+                                                    <button className="edit-button">Editar</button>
+                                                    <button className="cancel-button">Eliminar</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    );
+                                })}
+                                
                     </tbody>
                     </table>
                 </div>

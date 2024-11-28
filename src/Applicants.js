@@ -10,11 +10,11 @@ function Applicants() {
 
     useEffect(() => {
         // Load data from Applicants.json
-        fetch('/Applicants.json')
+        fetch('http://localhost:5433/candidature/getA')
             .then(response => response.json())
             .then(data => {
                 // Sort records by 'pacumulado' (promedio acumulado) descending
-                const sortedRecords = data.applicants.sort((a, b) => b.pacumulado - a.pacumulado);
+                const sortedRecords = data.sort((a, b) => b.gradeAverage - a.gradeAverage);
                 setRecords(sortedRecords);
             })
             .catch(error => console.error("Error loading data:", error));
@@ -83,10 +83,10 @@ function Applicants() {
                                     return (
                                         <tr key={index}>
                                             <td className="applicants-table-data">{applicant.name}</td>
-                                            <td className="applicants-table-data">{applicant.lastname}</td>
+                                            <td className="applicants-table-data">{applicant.lastName}</td>
                                             <td className="applicants-table-data">{applicant.code}</td>
-                                            <td className="applicants-table-data">{applicant.pacumulado}</td>
-                                            <td className="applicants-table-data">{applicant.pmateria}</td>
+                                            <td className="applicants-table-data">{applicant.gradeAverage}</td>
+                                            <td className="applicants-table-data">{applicant.gradeCourse}</td>
                                             <td className="applicants-table-data">
                                                 <div className="applicants-requirement-container">
                                                     <button 
