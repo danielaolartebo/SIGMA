@@ -9,16 +9,20 @@ function TableContent() {
     const recordsPerPage = 6;
 
     const columnNames = {
-        id: "Identificador",
-        period: "Periodo",
-        name: "Curso",
-        startPostulation: "Inicio de Convocatoria",
-        endPostulation: "Fin de Convocatoria",
+        id: "ID - CRN",
+        school: "Facultad",
+        program: "Programa",
+        course: "Curso",
+        start: "Inicio de Convocatoria",
+        finish: "Fin de Convocatoria",
+        averageGrade: "Promedio General",
+        courseGrade: "Promedio de la Materia",
+        semester: "Semestre",
         requirement: "Requisitos"
     };
 
     useEffect(() => {
-        fetch('http://localhost:3000/Data.json')
+        fetch('http://localhost:5433/monitoring/getA')
             .then(res => {
                 if (!res.ok) {
                     throw new Error(`HTTP error! Status: ${res.status}`);
@@ -26,9 +30,9 @@ function TableContent() {
                 return res.json();
             })
             .then(data => {
-                if (data.monitoria && data.monitoria.length > 0) {
-                    setColumn(Object.keys(data.monitoria[0]));
-                    setRecords(data.monitoria); 
+                if (data && data.length > 0) {
+                    setColumn(Object.keys(data[0]));
+                    setRecords(data); 
                 } else {
                     console.error("Data format is incorrect or 'monitoria' is empty.");
                 }
@@ -84,8 +88,8 @@ function TableContent() {
 
     const checkStatus = (startPostulation, endPostulation) => {
         const currentDate = new Date();
-        const startDate = new Date(startPostulation.split('/').reverse().join('-'));
-        const endDate = new Date(endPostulation.split('/').reverse().join('-'));
+        const startDate = new Date(startPostulation?.split('/').reverse().join('-'));
+        const endDate = new Date(endPostulation?.split('/').reverse().join('-'));
     
         if (currentDate >= startDate && currentDate <= endDate) {
             return { className: "status-active", text: "Activo" };
@@ -111,24 +115,19 @@ function TableContent() {
                     </thead>
                     <tbody>
                         {currentRecords.map((record, i) => {
-                            const status = checkStatus(record.startPostulation, record.endPostulation);
+                            const status = checkStatus(record.start, record.end);
                             return (
                                 <tr key={i}>
                                     <td className="table-data">{record.id}</td>
-                                    <td className="table-data">{record.period}</td>
-                                    <td className="table-data">{record.name}</td>
-                                    <td className="table-data">{record.startPostulation}</td>
-                                    <td className="table-data">{record.endPostulation}</td>
-                                    <td className="table-data">
-                                        <div className="requirement-container">
-                                            <button className="view-button">Ver</button>
-                                            <span className="requirement-text">
-                                                {record.requirement.split('\n').map((line, index) => (
-                                                    <span key={index}>{line}<br /></span>
-                                                ))}
-                                            </span>
-                                        </div>
-                                    </td>
+                                    <td className="table-data">{record.school.name}</td>
+                                    <td className="table-data">{record.program.name}</td>
+                                    <td className="table-data">{record.course.name}</td>
+                                    <td className="table-data">{Date(record.start)}</td>
+                                    <td className="table-data">{Date(record.end)}</td>
+                                    <td className="table-data">{record.averageGrade}</td>
+                                    <td className="table-data">{record.courseGrade}</td>
+                                    <td className="table-data">{record.semester}</td>
+                        
                                     <td className="table-data">
                                         <div className={status.className}>
                                             {status.text}
