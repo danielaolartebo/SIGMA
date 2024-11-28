@@ -1,12 +1,24 @@
 import './Applicants.css';
 import React, { useState, useEffect } from 'react';
 import VerticalNavbar from './VerticalNavbar';
+import AlertElect from './AlertElect';
 
 function Applicants() {
     const [records, setRecords] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [electionStatuses, setElectionStatuses] = useState({});
     const recordsPerPage = 8;
+    const [showElectAlert, setShowElectAlert] = useState(false);
+
+    const handleFinishClick = () => {
+        const electedApplicants = records.filter((applicant, index) => {
+          const applicantIndex = indexOfFirstRecord + index;
+          return electionStatuses[applicantIndex] === true;
+        });
+      
+        setRecords(electedApplicants);
+        setShowElectAlert(true)
+    };
 
     useEffect(() => {
         // Load data from Applicants.json
@@ -48,9 +60,13 @@ function Applicants() {
 
     return (
         <div>
+            <AlertElect show={showElectAlert} onClose={() => setShowElectAlert(false)} />
             {/* Load file button starts */}
-            <button className="applicants-top-right-button"> Terminar selección </button>
+            
+            <button className="applicants-top-right-button" onClick={handleFinishClick}>Terminar selección</button>
+            
             {/* Load file button ends */}
+            
 
             <VerticalNavbar />
 
