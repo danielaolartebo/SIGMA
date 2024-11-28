@@ -5,6 +5,8 @@ import Popup from './PopUp';
 import { useMemo } from 'react';
 import PopupCheck from './PopUpCheck';
 import Alert from './Alert';
+import { MyContext } from './MyContext';
+import { useContext } from 'react';
 
 function TableContent() {
     const [column, setColumn] = useState([]);
@@ -17,6 +19,7 @@ function TableContent() {
     const [state, setState] = useState("")
     const [alertVisible, setAlertVisible] = useState(false);
     const recordsPerPage = 6;
+    const { selectedValue, setSelectedValue, selectedCondition, setSelectedCondition, selectedRequest, setSelectedRequest } = useContext(MyContext)
 
     const columnNames = {
         id: "ID - CRN",
@@ -52,6 +55,102 @@ function TableContent() {
             })
             .catch(error => console.error('Error fetching data:', error));
     }, []);
+
+    useEffect(() => {
+        let prog ={
+
+        }
+        if ((!selectedValue && selectedCondition.trim() === "") || (selectedValue.trim() === "" && selectedCondition.trim() === "")) {
+            console.log("selectedValue está vacío, no se realizará ninguna solicitud.");
+            return; // Evita ejecutar el efecto si selectedValue es inválido
+        }
+        else if(!selectedValue  || selectedValue.trim() === ""){
+            prog={
+                programName:" ",
+                courseName:selectedCondition
+            }
+
+        }else{
+            prog={
+                programName:selectedValue,
+                courseName:selectedCondition
+            }
+        }
+        
+        if(selectedRequest === 'faculty' || selectedRequest === ''){
+            
+            fetch('http://localhost:5433/monitoring/findByFaculty',{
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(prog),
+            })
+            .then(res => {
+                if (!res.ok) {
+                    throw new Error(`HTTP error! Status: ${res.status}`);
+                }
+                return res.json();
+            })
+            .then(data => {
+                if (data && data.length > 0) {
+                    setColumn(Object.keys(data[0]));
+                    setRecords(data); 
+                } else {
+                    console.error("Data format is incorrect or 'monitoria' is empty.");
+                }
+            })
+            .catch(error => console.error('Error fetching data:', error));
+        }
+        else if(selectedRequest === 'program'){
+            fetch('http://localhost:5433/monitoring/findByProgram',{
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(prog),
+            })
+            .then(res => {
+                if (!res.ok) {
+                    throw new Error(`HTTP error! Status: ${res.status}`);
+                }
+                return res.json();
+            })
+            .then(data => {
+                if (data && data.length > 0) {
+                    setColumn(Object.keys(data[0]));
+                    setRecords(data); 
+                } else {
+                    console.error("Data format is incorrect or 'monitoria' is empty.");
+                }
+            })
+            .catch(error => console.error('Error fetching data:', error));
+        }else{
+            fetch('http://localhost:5433/monitoring/findByCourse',{
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(prog),
+            })
+            .then(res => {
+                if (!res.ok) {
+                    throw new Error(`HTTP error! Status: ${res.status}`);
+                }
+                return res.json();
+            })
+            .then(data => {
+                if (data && data.length > 0) {
+                    setColumn(Object.keys(data[0]));
+                    setRecords(data); 
+                } else {
+                    console.error("Data format is incorrect or 'monitoria' is empty.");
+                }
+            })
+            .catch(error => console.error('Error fetching data:', error));
+        }
+        
+    }, [selectedValue, selectedCondition]);
 
     const handlePopUpCheck = (id,status) =>{
         if(localStorage.getItem('role') !=='student'){
