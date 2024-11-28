@@ -3,6 +3,8 @@ import './CreateMonitoria.css';
 import './Task.css';
 import { Link } from 'react-router-dom';
 import VerticalNavbar from './VerticalNavbar';
+import Popup from "./PopUp";
+import { useNavigate } from "react-router-dom";
 
 function CreateMonitoria() {
 
@@ -10,6 +12,7 @@ function CreateMonitoria() {
     const [records, setRecords] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const recordsPerPage = 2;
+    const navigate = useNavigate();
 
     const [faculties, setFaculties] = useState([]); // State for Faculty options
     const [programs, setPrograms] = useState([]); // State for Program options
@@ -17,9 +20,11 @@ function CreateMonitoria() {
     const [selectedFaculty, setSelectedFaculty] = useState(""); // Selected Faculty
     const [selectedProgram, setSelectedProgram] = useState(""); // Selected Program
     const [selectedSubject, setSelectedSubject] = useState(""); // Selected Subject
-    const [selectedSemester, setSelectedSemester] = useState(""); // Selected Subject
-    const [selectedStartDate, setSelectedStartDate] = useState(""); // Selected Subject
-    const [selectedFinishDate, setSelectedFinishDate] = useState(""); // Selected Subject
+    const [selectedSemester, setSelectedSemester] = useState(""); // Selected Semester
+    const [selectedStartDate, setSelectedStartDate] = useState(""); // Selected StartDate
+    const [selectedFinishDate, setSelectedFinishDate] = useState(""); // Selected FinishDate
+    const [isOpen, setIsOpen] = useState(false)
+    const [message, setMessage] = useState("")
 
     // Fetch Faculty options
     useEffect(() => {
@@ -62,6 +67,7 @@ function CreateMonitoria() {
             .then(data => {
                 if (data) {
                     setPrograms(data);
+                    setSubject([])
                 } else {
                     setPrograms([])
                     console.error("Program data format is incorrect.");
@@ -129,37 +135,53 @@ function CreateMonitoria() {
         setSelectedFinishDate(event.target.value);
     };
 
+    
+
+
     const handleCreate = async() => {
+       
         const data = {
-            programName:selectedProgram,
-            courseName:selectedSubject,
-            schoolName:selectedFaculty,
-            start:selectedStartDate,
-            finish:selectedFinishDate,
-            professorId:localStorage.getItem('userId'),
-            semester:selectedSemester
-          }
-          console.log('Data to send:', data);
+            programName: selectedProgram,
+            courseName: selectedSubject,
+            schoolName: selectedFaculty,
+            start: selectedStartDate,
+            finish: selectedFinishDate,
+            professorId: localStorage.getItem("userId"),
+            semester: selectedSemester,
+          };
+        
+          console.log("Data to send:", data);
+        
           try {
-            const response = await fetch('http://localhost:5433/monitoring/create', {
-              method: 'POST',
+            const response = await fetch("http://localhost:5433/monitoring/create", {
+              method: "POST",
               headers: {
-                'Content-Type': 'application/json'
+                "Content-Type": "application/json",
               },
               body: JSON.stringify(data),
             });
-            console.log(response);
-            if(response.status === 200){
-              console.log('Monitoring created')
-            }else{
-              console.log("Can't create it")
+        
+            // Leer el mensaje del backend
+            const messageR = await response.text();
+        
+            if (response.ok) {
+                setMessage(messageR)
+                setIsOpen(!isOpen)
+                
+            } else {
+                setMessage(messageR)
+                console.error("Error: " + messageR)
+                setIsOpen(!isOpen)
             }
-    
-          }catch (error){
-            console.error('Error fetching data:', error);
-            }
+          } catch (error) {
+            console.error("Error fetching data:", error);
+            alert("Ocurrió un error inesperado. Por favor, inténtalo nuevamente.");
+          }
     };
 
+    const handleClose = () =>{
+        setIsOpen(!isOpen)
+    }
 
     const indexOfLastRecord = currentPage * recordsPerPage;
     const indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
@@ -184,6 +206,14 @@ function CreateMonitoria() {
             {/* Load file button starts */}
             <button className="top-right-button">Cargar datos</button>
             {/* Load file button ends */}
+
+            {/* Ventana emergente */}
+            <Popup
+                show={isOpen}
+                onClose={() => handleClose()}
+            >
+                {message}
+            </Popup>
 
             <VerticalNavbar />
             <div className="cm-content">
@@ -274,7 +304,12 @@ function CreateMonitoria() {
                     <Link to="#">¿Añadir nuevo requisito?</Link> */}
                     
                     {/* Botón de confirmación */}
-                    <Link to="/" type="submit" className="cm-confirm-button" onClick={handleCreate}>Confirmar</Link>
+                    <button 
+                        type="button" 
+                        className="cm-confirm-button" 
+                        onClick={handleCreate}>
+                        Confirmar
+                    </button>
                 </form>
 
             {/* Table starts */}
