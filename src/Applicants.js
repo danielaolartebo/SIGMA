@@ -15,6 +15,8 @@ function Applicants() {
           const applicantIndex = indexOfFirstRecord + index;
           return electionStatuses[applicantIndex] === true;
         });
+
+        setElectionStatuses(new Array(electedApplicants.length).fill(true))
       
         setRecords(electedApplicants);
         setShowElectAlert(true)
