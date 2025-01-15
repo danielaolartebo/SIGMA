@@ -10,17 +10,62 @@ function Applicants() {
     const recordsPerPage = 8;
     const [showElectAlert, setShowElectAlert] = useState(false);
 
-    const handleFinishClick = () => {
-        const electedApplicants = records.filter((applicant, index) => {
-          const applicantIndex = indexOfFirstRecord + index;
-          return electionStatuses[applicantIndex] === true;
-        });
+    const handleFinishClick = async () => {
 
-        setElectionStatuses(new Array(electedApplicants.length).fill(true))
-      
-        setRecords(electedApplicants);
+        // const electedApplicants = records.filter((applicant, index) => {
+        //     const applicantIndex = indexOfFirstRecord + index;
+        //     return electionStatuses[applicantIndex] === true;
+        //   });
+  
+        
+        //   setRecords(electedApplicants);
+        
+        
+        try {
+            const nonElectedApplicants = currentRecords.filter(
+                (_, index) => !electionStatuses[indexOfFirstRecord + index]
+            );
+            
+            for (const applicant of nonElectedApplicants) {
+                await fetch(`http://localhost:5433/candidature/${applicant.code}`, {
+                    method: 'DELETE',
+                });
+            }
+            
+            //setElectionStatuses(new Array(electedApplicants.length).fill(true))
+            //setElectionStatuses(new Array(electionStatuses.length).fill(true))
+    
+            // Update applicants
+            setRecords((prevRecords) =>
+                prevRecords.filter((_, index) => electionStatuses[indexOfFirstRecord + index])
+            );
+    
+        } catch (error) {
+            console.error('Error during end of selection:', error);
+            alert('Hubo un error al finalizar la selección.');
+        }
+
+        const electedCodes = currentRecords
+        .filter((applicant, index) => electionStatuses[indexOfFirstRecord + index])
+        .map(applicant => applicant.code); 
+
+        console.log(electedCodes)
+        try {
+            const response = await fetch('http://localhost:5433/email-finish-selection', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(electedCodes),
+            });
+
+            const result = await response.text();
+            alert(result);
+        } catch (error) {
+            console.error("Error finishing selection:", error);
+            alert("Failed to finalize the selection.");
+        }
         setShowElectAlert(true)
     };
+    
 
     useEffect(() => {
         // Load data from Applicants.json
@@ -59,6 +104,8 @@ function Applicants() {
             [index]: !prevStatuses[index]
         }));
     };
+
+    
 
     return (
         <div>
