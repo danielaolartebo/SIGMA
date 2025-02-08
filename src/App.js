@@ -23,8 +23,8 @@ function App() {
         <Route path="/" element={
           <>
             {/* Title begins */}
-            <div className="title-container" id="title-container">
-              <div className="title" id="title">
+            <div className="title-container-app" id="title-container-app">
+              <div className="title-app" id="title-app">
                   Postulación a Monitor
               </div>
             </div>
