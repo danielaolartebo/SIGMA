@@ -2,6 +2,7 @@ import './Task.css';
 import VerticalNavbar from './VerticalNavbar';
 import './Login.css';
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function Task() {
   // Estado para almacenar las actividades
@@ -130,7 +131,12 @@ function Task() {
     );
   };
 
-  
+  const navigate = useNavigate(); 
+
+    const handleCreateActivity = () => {
+        navigate('/CreateActivity'); 
+    };
+
 
   return (
     <div className="task-container">
@@ -147,7 +153,7 @@ function Task() {
 
         {/* Button create activity starts */}
         <div className="button-create-activity-container" id="button-create-activity-container">
-          <button className="create-activity-btn" id="create-activity-btn">
+          <button className="create-activity-btn" id="create-activity-btn" onClick={handleCreateActivity}>
             Crear actividad
           </button>
         </div>

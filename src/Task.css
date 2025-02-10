@@ -88,7 +88,7 @@
 .title-container {
   display: flex;
   justify-content: flex-start;
-  padding-top: 1.5em;
+  padding-top: 2em;
   padding-bottom: 1.5em;
   padding-left: 2em;
   margin-left: 14em; /* Avoids vertical navbar */
