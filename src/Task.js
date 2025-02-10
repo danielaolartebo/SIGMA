@@ -12,7 +12,7 @@ function Task() {
 
   // Estado para la paginación
   const [currentPage, setCurrentPage] = useState(1);
-  const rowsPerPage = 8; // Número de filas por página
+  const rowsPerPage = 6; // Número de filas por página
 
   // Función para alternar filas expandibles
   const toggleRow = (id) => {
@@ -34,22 +34,38 @@ function Task() {
     fetchActivities();
   }, []);
 
+  const [editedActivities, setEditedActivities] = useState({});
   
+  const handleNameChange = (id, value) => {
+    setEditedActivities((prev) => ({ ...prev, [id]: { ...prev[id], nombre: value } }));
+  };
 
-  // Calcular el índice de las filas a mostrar
-  const indexOfLastRow = currentPage * rowsPerPage;
-  const indexOfFirstRow = indexOfLastRow - rowsPerPage;
-  const currentRows = activities.slice(indexOfFirstRow, indexOfLastRow);
+  const handleCategoryChange = (id, value) => {
+    setEditedActivities((prev) => ({ ...prev, [id]: { ...prev[id], categoria: value } }));
+  };
+
+  const handleCursoChange = (id, value) => {
+    setEditedActivities((prev) => ({ ...prev, [id]: { ...prev[id], curso: value } }));
+  };
+
+  const handleAsignadoAChange = (id, value) => {
+    setEditedActivities((prev) => ({ ...prev, [id]: { ...prev[id], asignadoA: value } }));
+  };
+
+  const handleDescripcionChange = (id, value) => {
+    setEditedActivities((prev) => ({ ...prev, [id]: { ...prev[id], detalles: value } }));
+  };
+
+  const handleFechaUltimaEdicionChange = (id, value) => {
+    setEditedActivities((prev) => ({ ...prev, [id]: { ...prev[id], fechaUltimaEdicion: value } }));
+  };
+
   const [records, setRecords] = useState([]);
   const recordsPerPage = 2;
-
-  // Calcular el número total de páginas
-  const totalPages = Math.ceil(activities.length / rowsPerPage);
-
   const indexOfLastRecord = currentPage * recordsPerPage;
   const indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
   const currentRecords = records.slice(indexOfFirstRecord, indexOfLastRecord);
-
+  
   const nextPage = () => {
       if (currentPage < totalPages) {
           setCurrentPage(currentPage + 1);
@@ -77,15 +93,44 @@ function Task() {
   const statuses = [...new Set(activities.map(activity => activity.estado))];
 
   // Filtrar actividades según los filtros seleccionados
-  const filteredActivities = activities.filter(activity => {
-    return (
-      (semesterFilter === '' || activity.semestre === semesterFilter) &&
-      (courseFilter === '' || activity.curso === courseFilter) &&
-      (categoryFilter === '' || activity.categoria === categoryFilter) &&
-      (assignedToFilter === '' || activity.asignadoA === assignedToFilter) &&
-      (statusFilter === '' || activity.estado === statusFilter)
+  const filteredActivities = activities.filter(activity => (
+    (semesterFilter === '' || activity.semestre === semesterFilter) &&
+    (courseFilter === '' || activity.curso === courseFilter) &&
+    (categoryFilter === '' || activity.categoria === categoryFilter) &&
+    (assignedToFilter === '' || activity.asignadoA === assignedToFilter) &&
+    (statusFilter === '' || activity.estado === statusFilter)
+ ));
+ 
+ const indexOfLastRow = Math.min(currentPage * rowsPerPage, filteredActivities.length);
+ const indexOfFirstRow = Math.max(0, indexOfLastRow - rowsPerPage);
+ const currentRows = filteredActivities.slice(indexOfFirstRow, indexOfLastRow); 
+ const totalPages = Math.max(1, Math.ceil(filteredActivities.length / rowsPerPage));
+ const handleSave = (activityId) => {
+    console.log(`Guardando cambios para la actividad con ID: ${activityId}`);
+    // Lógica para guardar los cambios
+  };
+  
+  const handleCancel = (activityId) => {
+    console.log(`Cancelando edición para la actividad con ID: ${activityId}`);
+    // Lógica para restaurar los valores originales (si aplica)
+  };
+  
+  const handleDelete = (activityId) => {
+    console.log(`Eliminando actividad con ID: ${activityId}`);
+    // Lógica para eliminar la actividad
+  };
+
+  const toggleStatus = (id) => {
+    setActivities((prevActivities) =>
+      prevActivities.map((activity) =>
+        activity.id === id && activity.estado === "Pendiente"
+          ? { ...activity, estado: "Completado" }
+          : activity
+      )
     );
-  });
+  };
+
+  
 
   return (
     <div className="task-container">
@@ -150,7 +195,7 @@ function Task() {
         {/* Tabla de actividades starts */}
         <div className="table-container">
           <table className="table">
-            <thead className="table-head">
+            <thead className="table-head-act">
               <tr>
                 <th>Nombre</th>
                 <th>Curso</th>
@@ -164,8 +209,30 @@ function Task() {
               </tr>
             </thead>
             <tbody>
-              {currentRows.map((activity) => (
-                <React.Fragment key={activity.id}>
+              {currentRows.map((activity) => {
+
+              // Formato fecha "DD/MM/YYYY"
+                const parseDate = (dateString) => {
+                  const [day, month, year] = dateString.split("/").map(Number);
+                  return new Date(year, month - 1, day); 
+                };
+
+                const fechaCreacion = parseDate(activity.fechaCreacion);
+                const fechaEntrega = parseDate(activity.fechaEntrega);
+                const fechaActual = new Date();
+
+                let estadoClase = "pending"; // Por defecto, amarillo (Gris)
+
+                if (activity.estado === "Pendiente") {
+                  if (fechaActual > fechaEntrega) {
+                    estadoClase = "pending-late"; // Rojo (Tardío)
+                  }
+                } else if (activity.estado === "Completado") {
+                  estadoClase = "completed"; // Verde (Completado)
+                }
+
+                return (
+                  <React.Fragment key={activity.id}>
                   <tr>
                     <td>{activity.nombre}</td>
                     <td>{activity.curso}</td>
@@ -174,33 +241,92 @@ function Task() {
                     <td>{activity.fechaEntrega}</td>
                     <td>{activity.creadoPor}</td>
                     <td>{activity.asignadoA}</td>
-                    <td>{activity.estado}</td>
+                    <td>
+                    <span
+                    className={`table-actions ${estadoClase}`}
+                    onClick={activity.estado === "Pendiente" ? () => toggleStatus(activity.id) : null}
+                  >
+                    {activity.estado}
+                  </span>
+                    </td>
                     <td>
                       <span
                         className="table-actions"
                         onClick={() => toggleRow(activity.id)}
                       >
-                        {expandedRow === activity.id ? "Ocultar" : "Ver más"}
+                        {expandedRow === activity.id ? "-" : "+"}
                       </span>
                     </td>
                   </tr>
                   {expandedRow === activity.id && (
                     <tr>
                       <td colSpan="9" className="table-details">
-                        <strong>Detalles:</strong> {activity.detalles}
-                      </td>
-                    </tr>
+                      <div className="edit-form">
+                          {/* Primera fila */}
+                          <label>
+                            Nombre:
+                            <input type="text" value={editedActivities[activity.id]?.nombre || activity.nombre} onChange={(e) => handleNameChange(activity.id, e.target.value)} />
+                          </label>
+
+                          <label>
+                            Curso:
+                            <select value={editedActivities[activity.id]?.curso || activity.curso} onChange={(e) => handleCursoChange(activity.id, e.target.value)}>
+                              {courses.map((curso, index) => <option key={index} value={curso}>{curso}</option>)}
+                            </select>
+                          </label>
+
+                          <label>
+                            Categoría:
+                            <select value={editedActivities[activity.id]?.categoria || activity.categoria} onChange={(e) => handleCategoryChange(activity.id, e.target.value)}>
+                              {categories.map((categoria, index) => <option key={index} value={categoria}>{categoria}</option>)}
+                            </select>
+                          </label>
+
+                          <label>
+                            Asignado a:
+                            <select value={editedActivities[activity.id]?.asignadoA || activity.asignadoA} onChange={(e) => handleAsignadoAChange(activity.id, e.target.value)}>
+                              {assignedTos.map((asignadoA, index) => <option key={index} value={asignadoA}>{asignadoA}</option>)}
+                            </select>
+                          </label>
+
+                          {/* Segunda fila */}
+                          <label>
+                            Asistentes:
+                            <select></select>
+                          </label>
+
+                          <label>
+                            Fecha Última Edición:
+                            <input type="text" value={activity.fechaUltimaEdicion} readOnly />
+                          </label>
+
+                          <label>
+                            Descripción:
+                            <textarea rows="4" value={editedActivities[activity.id]?.detalles || activity.detalles} onChange={(e) => handleDescripcionChange(activity.id, e.target.value)} />
+                          </label>
+
+                          {/* Botones */}
+                          <div className="button-container">
+                            <button className="save-button-act" onClick={() => handleSave(activity.id)}>Guardar</button>
+                            <button className="cancel-button-act" onClick={() => handleCancel(activity.id)}>Cancelar</button>
+                            <button className="delete-button-act" onClick={() => handleDelete(activity.id)}>Eliminar</button>
+                          </div>
+                        </div>
+                        
+                    </td>
+                  </tr>
                   )}
                 </React.Fragment>
-              ))}
+                );
+              })}
             </tbody>
           </table>
 
           {/* Paginación */}
           <div className="div-pagination">
-                <div className="pagination-info">
-                    Mostrando {indexOfFirstRecord + 1} - {Math.min(indexOfLastRecord, records.length)} de {records.length} resultados
-                </div>
+            <div className="pagination-info">
+              Mostrando {indexOfFirstRow + 1} - {indexOfLastRow} de {filteredActivities.length} resultados
+            </div>
 
                 <div className="main-pagination">
                     <div className="pagination">

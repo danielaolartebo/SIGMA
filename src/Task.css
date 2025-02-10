@@ -1,7 +1,7 @@
 :root {
   --main-color: #5454e8;
 	--hover-color: rgb(66, 65, 65);
-  --grey-color: rgb(242, 242, 242);
+  --grey-color: grey;
 }
 
 .top-right-button {
@@ -88,8 +88,8 @@
 .title-container {
   display: flex;
   justify-content: flex-start;
-  padding-top: 3em;
-  padding-bottom: 3em;
+  padding-top: 1.5em;
+  padding-bottom: 1.5em;
   padding-left: 2em;
   margin-left: 14em; /* Avoids vertical navbar */
 }
@@ -161,8 +161,8 @@
   font-size: 14px;
 }
 
-.table-head {
-  background-color: #8a8ae2;
+.table-head-act {
+  background-color: var(--grey-color);
   color: white;
   font-weight: bold;
 }
@@ -177,12 +177,13 @@
 
 .table-actions {
   color: var(--hover-color);
-  text-decoration: underline;
   cursor: pointer;
+  font-weight: bold;
+  font-size: 1.5em;
 }
 
 .table-actions:hover {
-  color: var(--hover-color);
+  color: var(--main-color);
 }
 
 .table-details {
@@ -311,4 +312,120 @@
       min-width: auto;
     }
   }
+
+
+  /* ==========================VER MAS SECTION================================= */
+
+/* Contenedor en Grid */
+.edit-form {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 columnas en la primera fila */
+  gap: 15px; /* Espacio entre elementos */
+  max-width: 1000px; /* Ajusta el ancho según necesites */
+  margin: auto;
+}
+
+/* Asegurar que los elementos ocupen bien el espacio */
+.edit-form label {
+  display: flex;
+  flex-direction: column;
+  font-weight: bold;
+}
+
+/* Campos de entrada, selects y textarea */
+.edit-form input,
+.edit-form select,
+.edit-form textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+/* Asegurar que el textarea sea más grande */
+.edit-form textarea {
+  resize: vertical;
+  height: 20px;
+  min-height: 20px;
+  max-height: 100px;
+}
+
+/* Ajuste para que ciertos elementos ocupen más columnas */
+.edit-form label:nth-child(1), /* Asistentes */
+.edit-form label:nth-child(2) /* Fecha Última Edición */{ /* Descripción */
+  grid-column: span 2; /* Que ocupen 2 columnas */
+}
+
+.edit-form label:nth-child(7) { /* Descripción */
+  grid-column: span 4; /* Que ocupen 4 columnas */
+}
+
+/* Botones alineados en fila */
+.button-container {
+  grid-column: span 4; /* Que ocupe todo el ancho */
+  display: flex;
+  justify-content: center;
+  gap: 15px; 
+}
+
+/* Estilos uniformes para todos los botones */
+.button-container button {
+  width: 100px; /* Mismo ancho */
+  height: 35px; /* Mismo alto */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+}
+
+/* Colores específicos para cada botón */
+.save-button-act {
+  background-color: #4CAF50;
+}
+
+.cancel-button-act {
+  background-color: #9e9e9e;
+}
+
+.delete-button-act {
+  background-color: #c9302c;
+}
+
+/* Efectos hover */
+.save-button:hover {
+  background-color: #45a049;
+}
+
+.cancel-button:hover {
+  background-color: #9e9e9e;
+}
+
+.delete-button:hover {
+  background-color: #c9302c;
+}
+
+  /* ==========================ESTADOS================================= */
+
+  .table-actions {
+    cursor: pointer;
+    font-weight: bold;
+    font-size: inherit; /* Mantiene el tamaño original */
+  }
+  
+  
+  .pending {
+    color: grey; /* Pendiente pero dentro del tiempo */
+  }
+  
+  .pending-late {
+    color: #a6370b; /* Pendiente y tardío */
+  }
+  
+  .completed {
+    color: green; /* Completado */
+  }
+  
   
