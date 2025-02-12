@@ -7,6 +7,7 @@ function CreateActivity() {
     return (
         <div>
             <VerticalNavbar />
+            
         </div>
     );
 }

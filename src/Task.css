@@ -49,23 +49,40 @@
     }
     }
   
-  .menu-items {
-    display: flex;
-    flex-direction: column;
-    padding: 10px;
-    align-items: center;
-  }
-  
-  .menu-items a {
-    color: white; 
-    padding: 15px; 
-    text-decoration: none; 
-    transition: background-color 0.3s;
-  }
-  
-  .menu-items a:hover {
-    color: black;
-  }
+    .menu-items {
+      display: flex;
+      flex-direction: column;
+      padding: 10px;
+      align-items: center;
+    }
+    
+    .menu-items a {
+      color: white;
+      padding: 15px;
+      text-decoration: none;
+      transition: background-color 0.3s ease-in-out; /* Suaviza la transición */
+    }
+    
+    .menu-items a:hover {
+      color: black;
+    }
+    
+    .menu-items a.active {
+      color: black;
+    }
+    
+    .logout-button {
+      background-color: red;
+      color: white;
+      font-weight: bold;
+      padding: 15px;
+      border-radius: 5px;
+    }
+    
+    .logout-button:hover {
+      background-color: darkred;
+    }
+    
   
   .logout-button {
     color: white; 
@@ -330,6 +347,8 @@
   display: flex;
   flex-direction: column;
   font-weight: bold;
+  font-size: 15px;
+  font-family: var(--main-font-family);
 }
 
 /* Campos de entrada, selects y textarea */
@@ -340,7 +359,8 @@
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  font-size: 16px;
+  font-size: 15px;
+  font-family: var(--main-font-family);
 }
 
 /* Asegurar que el textarea sea más grande */
@@ -349,6 +369,8 @@
   height: 20px;
   min-height: 20px;
   max-height: 100px;
+  font-size: 15px;
+  font-family: var(--main-font-family);
 }
 
 /* Ajuste para que ciertos elementos ocupen más columnas */
@@ -358,6 +380,8 @@
 }
 
 .edit-form label:nth-child(7) { /* Descripción */
+  font-family: var(--main-font-family);
+  font-size: 15px;
   grid-column: span 4; /* Que ocupen 4 columnas */
 }
 
@@ -376,7 +400,7 @@
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: bold;
   color: white;
 }
