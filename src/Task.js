@@ -121,13 +121,25 @@ function Task() {
     // Lógica para eliminar la actividad
   };
 
+  const formatDate = (date) => {
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+  };
+
   const toggleStatus = (id) => {
     setActivities((prevActivities) =>
-      prevActivities.map((activity) =>
-        activity.id === id && activity.estado === "Pendiente"
-          ? { ...activity, estado: "Completado" }
-          : activity
-      )
+      prevActivities.map((activity) => {
+        if (activity.id === id && activity.estado === "Pendiente") {
+          return {
+            ...activity,
+            estado: "Completado",
+            fechaRealEntrega: formatDate(new Date()),
+          };
+        }
+        return activity;
+      })
     );
   };
 
@@ -206,8 +218,9 @@ function Task() {
                 <th>Nombre</th>
                 <th>Curso</th>
                 <th>Categoría</th>
-                <th>Fecha Creación</th>
-                <th>Fecha Entrega</th>
+                <th>Fecha creación</th>
+                <th>Fecha solicitada entrega</th>
+                <th>Fecha real entrega</th>
                 <th>Creado por</th>
                 <th>Asignado a</th>
                 <th>Estado</th>
@@ -223,20 +236,32 @@ function Task() {
                   return new Date(year, month - 1, day); 
                 };
 
-                const fechaCreacion = parseDate(activity.fechaCreacion);
-                const fechaEntrega = parseDate(activity.fechaEntrega);
+                const fechaSolicitadaEntrega = parseDate(activity.fechaSolicitadaEntrega);
                 const fechaActual = new Date();
 
-                let estadoClase = "pending"; // Por defecto, amarillo (Gris)
+                let estadoClase = "";
 
                 if (activity.estado === "Pendiente") {
-                  if (fechaActual > fechaEntrega) {
-                    estadoClase = "pending-late"; // Rojo (Tardío)
+                  // Si está pendiente, se determina si está tarde o no
+                  if (fechaActual > fechaSolicitadaEntrega) {
+                    estadoClase = "pending-late"; // Color rojo
+                  } else {
+                    estadoClase = "pending"; // Color gris
                   }
                 } else if (activity.estado === "Completado") {
-                  estadoClase = "completed"; // Verde (Completado)
-                }
+                  // Para completado, se compara la fecha real de entrega con la solicitada
+                  const fechaRealEntregaParsed = parseDate(activity.fechaRealEntrega);
 
+                  // Se calcula la fecha solicitada + 2 días (Chance para que el monitor entregue la actividad)
+                  const dosDiasDespues = new Date(fechaSolicitadaEntrega.getTime() + 2 * 24 * 60 * 60 * 1000);
+                  
+                  // Si la fecha real de entrega es mayor a la fecha solicitada + 2 días, se considera tardío
+                  if (fechaRealEntregaParsed > dosDiasDespues) {
+                    estadoClase = "completed-late";
+                  } else {
+                    estadoClase = "completed";
+                  }
+                }
                 return (
                   <React.Fragment key={activity.id}>
                   <tr>
@@ -244,7 +269,8 @@ function Task() {
                     <td>{activity.curso}</td>
                     <td>{activity.categoria}</td>
                     <td>{activity.fechaCreacion}</td>
-                    <td>{activity.fechaEntrega}</td>
+                    <td>{activity.fechaSolicitadaEntrega}</td>
+                    <td>{activity.fechaRealEntrega}</td>
                     <td>{activity.creadoPor}</td>
                     <td>{activity.asignadoA}</td>
                     <td>

@@ -445,11 +445,16 @@
   }
   
   .pending-late {
-    color: #a6370b; /* Pendiente y tardío */
+    color: #a6370b; /* Pendiente tardío */
   }
-  
+
   .completed {
-    color: green; /* Completado */
+    color: green;  /* Completado a tiempo */
   }
-  
-  
+
+  .completed-late {
+    color: green;
+    background-color: yellow;
+    padding: 2px 4px;   /* Completado pero entregado tarde: texto verde con fondo amarillo */
+    border-radius: 4px;
+  }
