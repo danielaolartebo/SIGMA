@@ -61,6 +61,10 @@ function Task() {
     setEditedActivities((prev) => ({ ...prev, [id]: { ...prev[id], fechaUltimaEdicion: value } }));
   };
 
+  const handleFechaSolicitadaEntrega = (id, value) => {
+    setEditedActivities((prev) => ({ ...prev, [id]: { ...prev[id], fechaSolicitadaEntrega: value } }));
+  };
+
   const [records, setRecords] = useState([]);
   const recordsPerPage = 2;
   const indexOfLastRecord = currentPage * recordsPerPage;
@@ -89,6 +93,7 @@ function Task() {
   // Generar opciones únicas para cada filtro
   const semesters = [...new Set(activities.map(activity => activity.semestre))];
   const courses = [...new Set(activities.map(activity => activity.curso))];
+  const requestedDueDate = [...new Set(activities.map(activity => activity.fechaSolicitadaEntrega))];
   const categories = [...new Set(activities.map(activity => activity.categoria))];
   const assignedTos = [...new Set(activities.map(activity => activity.asignadoA))];
   const statuses = [...new Set(activities.map(activity => activity.estado))];
@@ -308,6 +313,15 @@ function Task() {
                           </label>
 
                           <label>
+                            Fecha solicitada entrega:
+                            <input 
+                              type="date"
+                              value={editedActivities[activity.id]?.fechaSolicitadaEntrega || activity.fechaSolicitadaEntrega}
+                              onChange={(e) => handleFechaSolicitadaEntrega(activity.id, e.target.value)}
+                            />
+                          </label>
+
+                          <label>
                             Categoría:
                             <select value={editedActivities[activity.id]?.categoria || activity.categoria} onChange={(e) => handleCategoryChange(activity.id, e.target.value)}>
                               {categories.map((categoria, index) => <option key={index} value={categoria}>{categoria}</option>)}
@@ -328,7 +342,7 @@ function Task() {
                           </label>
 
                           <label>
-                            Fecha Última Edición:
+                            Fecha última edición:
                             <input type="text" value={activity.fechaUltimaEdicion} readOnly />
                           </label>
 

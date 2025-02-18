@@ -296,7 +296,7 @@
   
   .filter-container-activities select,
   .filter-container-activities input {
-    min-width: 250px;
+    min-width: 243px;
     padding: 0.5em;
     font-size: 1rem;
   }
@@ -375,11 +375,12 @@
 
 /* Ajuste para que ciertos elementos ocupen más columnas */
 .edit-form label:nth-child(1), /* Asistentes */
-.edit-form label:nth-child(2) /* Fecha Última Edición */{ /* Descripción */
+.edit-form label:nth-child(2) /* Fecha Última Edición */
+.edit-form label:nth-child(3) /* Fecha Última Edición */{ 
   grid-column: span 2; /* Que ocupen 2 columnas */
 }
 
-.edit-form label:nth-child(7) { /* Descripción */
+.edit-form label:nth-child(8) { /* Descripción */
   font-family: var(--main-font-family);
   font-size: 15px;
   grid-column: span 4; /* Que ocupen 4 columnas */
